@@ -19,6 +19,7 @@
             --gray: #1e293b;
             --light-gray: #cbd5e1;
             --text: #ffffff;
+            --success: #10b981;
         }
 
         body {
@@ -160,6 +161,11 @@
             border: 1px solid rgba(139, 92, 246, 0.3);
         }
 
+        .skill-tag.new {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
         /* プロジェクト */
         .projects-grid {
             display: grid;
@@ -200,16 +206,68 @@
             transform: scaleX(1);
         }
 
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
         .project-card h3 {
             font-size: 1.5rem;
-            margin-bottom: 15px;
             color: #ffffff;
+        }
+
+        .badge-new {
+            background: var(--success);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
 
         .project-card p {
             color: var(--light-gray);
             margin-bottom: 20px;
             font-size: 1rem;
+        }
+
+        .version-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .version-tab {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            background: transparent;
+            color: var(--light-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .version-tab.active {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: var(--primary);
+            color: var(--text);
+        }
+
+        .version-content {
+            display: none;
+        }
+
+        .version-content.active {
+            display: block;
         }
 
         .tech-stack {
@@ -225,6 +283,12 @@
             border-radius: 12px;
             font-size: 0.85rem;
             color: var(--primary);
+        }
+
+        .project-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
         .project-link {
@@ -348,6 +412,8 @@
                 </div>
                 <div class="skills">
                     <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag new">React</span>
+                    <span class="skill-tag new">TypeScript</span>
                     <span class="skill-tag">Python</span>
                     <span class="skill-tag">Google Apps Script</span>
                     <span class="skill-tag">FastAPI</span>
@@ -380,16 +446,49 @@
                 </div>
 
                 <div class="project-card fade-in" style="animation-delay: 0.1s;">
-                    <h3>売上分析ダッシュボード</h3>
-                    <p>インタラクティブなグラフで売上データを可視化。PDF出力機能により、レポート作成を自動化。</p>
-                    <div class="tech-stack">
-                        <span class="tech">JavaScript</span>
-                        <span class="tech">Chart.js</span>
-                        <span class="tech">データ可視化</span>
+                    <div class="project-header">
+                        <h3>売上分析ダッシュボード</h3>
+                        <span class="badge-new">React版追加!</span>
                     </div>
-                    <a href="https://github.com/SE0831/sales-analytics-dashboard" class="project-link" target="_blank">
-                        View Project →
-                    </a>
+                    <p>インタラクティブなグラフで売上データを可視化。JavaScript版からReact+TypeScript版へ完全移植しました。</p>
+                    
+                    <div class="version-selector">
+                        <button class="version-tab active" onclick="switchVersion(this, 'js')">JavaScript版</button>
+                        <button class="version-tab" onclick="switchVersion(this, 'react')">React版</button>
+                    </div>
+
+                    <div id="js-version" class="version-content active">
+                        <div class="tech-stack">
+                            <span class="tech">JavaScript</span>
+                            <span class="tech">Chart.js</span>
+                            <span class="tech">HTML/CSS</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://se0831.github.io/sales-analytics-dashboard/" class="project-link" target="_blank">
+                                Demo →
+                            </a>
+                            <a href="https://github.com/SE0831/sales-analytics-dashboard" class="project-link" target="_blank">
+                                GitHub →
+                            </a>
+                        </div>
+                    </div>
+
+                    <div id="react-version" class="version-content">
+                        <div class="tech-stack">
+                            <span class="tech">React</span>
+                            <span class="tech">TypeScript</span>
+                            <span class="tech">Chart.js</span>
+                            <span class="tech">Hooks</span>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--light-gray); margin-bottom: 15px;">
+                            JavaScript版を完全移植。型安全性とコンポーネント設計を実践しました。
+                        </p>
+                        <div class="project-links">
+                            <a href="https://github.com/SE0831/sales-dashboard-react" class="project-link" target="_blank">
+                                GitHub →
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="project-card fade-in" style="animation-delay: 0.2s;">
@@ -443,5 +542,29 @@
             <p>&copy; 2024 Seiji Yamano. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        function switchVersion(button, version) {
+            // すべてのタブを非アクティブに
+            document.querySelectorAll('.version-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // すべてのコンテンツを非表示に
+            document.querySelectorAll('.version-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // クリックされたタブをアクティブに
+            button.classList.add('active');
+            
+            // 対応するコンテンツを表示
+            if (version === 'js') {
+                document.getElementById('js-version').classList.add('active');
+            } else {
+                document.getElementById('react-version').classList.add('active');
+            }
+        }
+    </script>
 </body>
 </html>
